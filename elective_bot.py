@@ -16,6 +16,8 @@ import captcha
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+adapter=requests.adapters.HTTPAdapter(pool_connections=5,pool_maxsize=5,pool_block=True)
+
 TIMEOUT_S=10
 
 log_q=queue.Queue()
@@ -52,6 +54,7 @@ class Logger:
 class ElectiveBot:
     def __init__(self,name):
         self.s=requests.Session()
+        self.s.mount('http://elective.pku.edu.cn',adapter)
         self.s.verify=False
         self.s.trust_env=True
         self.s.headers={
